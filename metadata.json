@@ -1,0 +1,6 @@
+{
+  "name": "2048 BLOCK MERGE",
+  "description": "Addictive 5-column vertical number block merging puzzle game with chain reactions, combo multipliers, and tactical boosters.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
