@@ -1,0 +1,29 @@
+import type { CapacitorConfig } from '@capacitor/cli';
+
+const config: CapacitorConfig = {
+  appId: 'com.morsalin.blockmerge2048',
+  appName: '2048 BLOCK MERGE',
+  webDir: 'dist',
+  backgroundColor: '#0e0520',
+  android: {
+    allowMixedContent: false,
+    captureInput: true,
+    webContentsDebuggingEnabled: false,
+  },
+  plugins: {
+    SplashScreen: {
+      launchShowDuration: 900,
+      launchAutoHide: true,
+      backgroundColor: '#0e0520',
+      androidScaleType: 'CENTER_CROP',
+      showSpinner: false,
+    },
+    StatusBar: {
+      style: 'DARK',
+      backgroundColor: '#0e0520',
+      overlaysWebView: false,
+    },
+  },
+};
+
+export default config;

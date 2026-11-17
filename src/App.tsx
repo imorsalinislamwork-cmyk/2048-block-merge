@@ -55,6 +55,7 @@ import {
   saveMergeMuted,
   saveMergeStats,
 } from './utils/mergeStorage';
+import { initNativeAndroidUI, registerAndroidBackButton } from './utils/nativePlatform';
 
 const INITIAL_BOOSTERS: BoosterCounts = {
   hammer: 2,
@@ -702,6 +703,37 @@ export default function App() {
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
   }, [activeTargeting, aimedCol, handleActivateBooster, handleDropColumn, isBusy, screen]);
+
+  // Initialize native Android StatusBar & SplashScreen once on mount
+  useEffect(() => {
+    void initNativeAndroidUI();
+  }, []);
+
+  // Handle Android hardware back button cleanly
+  useEffect(() => {
+    return registerAndroidBackButton(() => {
+      if (activeTargeting !== null) {
+        setActiveTargeting(null);
+        return true;
+      }
+      if (screen === 'PLAYING') {
+        mergeSound.playClick();
+        setScreen('PAUSED');
+        return true;
+      }
+      if (screen === 'PAUSED') {
+        mergeSound.playClick();
+        setScreen('PLAYING');
+        return true;
+      }
+      if (screen === 'GAME_OVER') {
+        mergeSound.playClick();
+        setScreen('TITLE');
+        return true;
+      }
+      return false;
+    });
+  }, [activeTargeting, screen]);
 
   if (screen === 'TITLE') {
     return (
