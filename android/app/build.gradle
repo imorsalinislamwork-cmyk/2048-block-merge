@@ -26,7 +26,9 @@ android {
         release {
             def storePath = System.getenv("RELEASE_STORE_FILE") ?: keystoreProperties['storeFile']
             if (storePath) {
-                storeFile file(storePath)
+                def appScopedFile = file(storePath)
+                def rootScopedFile = rootProject.file(storePath)
+                storeFile appScopedFile.exists() ? appScopedFile : rootScopedFile
                 storePassword System.getenv("RELEASE_STORE_PASSWORD") ?: keystoreProperties['storePassword']
                 keyAlias System.getenv("RELEASE_KEY_ALIAS") ?: keystoreProperties['keyAlias']
                 keyPassword System.getenv("RELEASE_KEY_PASSWORD") ?: keystoreProperties['keyPassword']
@@ -37,7 +39,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            if (signingConfigs.release.storeFile != null) {
+            if (signingConfigs.release.storeFile != null && signingConfigs.release.storeFile.exists()) {
                 signingConfig signingConfigs.release
             }
         }
@@ -64,6 +66,7 @@ repositories {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "androidx.appcompat:appcompat:$androidxAppCompatVersion"
+    implementation "androidx.core:core:$androidxCoreVersion"
     implementation "androidx.coordinatorlayout:coordinatorlayout:$androidxCoordinatorLayoutVersion"
     implementation "androidx.core:core-splashscreen:$coreSplashScreenVersion"
     implementation project(':capacitor-android')

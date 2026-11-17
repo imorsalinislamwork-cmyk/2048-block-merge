@@ -24,6 +24,30 @@ allprojects {
     }
 }
 
+subprojects { subproject ->
+    def targetJava = JavaVersion.current().isCompatibleWith(JavaVersion.VERSION_21)
+        ? JavaVersion.VERSION_21
+        : JavaVersion.VERSION_17
+
+    subproject.plugins.withId('com.android.library') {
+        subproject.androidComponents {
+            finalizeDsl { ext ->
+                ext.compileOptions.sourceCompatibility = targetJava
+                ext.compileOptions.targetCompatibility = targetJava
+            }
+        }
+    }
+
+    subproject.plugins.withId('com.android.application') {
+        subproject.androidComponents {
+            finalizeDsl { ext ->
+                ext.compileOptions.sourceCompatibility = targetJava
+                ext.compileOptions.targetCompatibility = targetJava
+            }
+        }
+    }
+}
+
 task clean(type: Delete) {
     delete rootProject.buildDir
 }

@@ -8,9 +8,9 @@
 
 ## 1. Prerequisites
 
-- **Node.js** 18+ and npm
-- **Java Development Kit (JDK)** 17 or 21
-- **Android Studio** (with Android SDK & Platform Tools installed)
+- **Node.js** 18+ and npm (always run `npm install` before opening `android/` so `node_modules/@capacitor/*` plugin modules resolve)
+- **Java Development Kit (JDK)** 17 or 21 (JDK 21 recommended; Android Gradle config automatically aligns all Capacitor plugin Java variants for JDK 17 or 21)
+- **Android Studio** (with Android SDK 36 & Platform Tools installed)
 
 ---
 
@@ -79,6 +79,18 @@ The signed Google Play App Bundle will be generated at:
 android/app/build/outputs/bundle/release/app-release.aab
 ```
 
+To build a debug APK immediately without a release keystore:
+
+```bash
+npm run cap:sync && cd android && ./gradlew assembleDebug
+```
+
+Debug APK output path:
+
+```text
+android/app/build/outputs/apk/debug/app-debug.apk
+```
+
 To build a release APK for direct sideload testing instead:
 
 ```bash
@@ -107,3 +119,14 @@ defaultConfig {
 ```
 
 Then run `npm run android:aab` and upload `app-release.aab` to the Google Play Console.
+
+---
+
+## 7. Play Store Readiness Summary
+
+- **App Name:** `2048 BLOCK MERGE` (`android/app/src/main/res/values/strings.xml`)
+- **Application ID / Package:** `com.morsalin.blockmerge2048` (`android/app/build.gradle`, `capacitor.config.ts`)
+- **SDK Levels:** `minSdkVersion 24`, `compileSdkVersion 36`, `targetSdkVersion 36` (`android/variables.gradle`)
+- **Versioning:** `versionCode 1`, `versionName "1.0.0"` (`android/app/build.gradle`)
+- **App Icons & Splash:** Custom branded adaptive + legacy icons (`mipmap-mdpi` to `mipmap-xxxhdpi`), Play Store 512×512 icon (`android/playstore-icon-512.png`), and cosmic purple splash screens (`drawable-*`).
+- **Release Security:** `webContentsDebuggingEnabled: false` (`capacitor.config.ts`), minimal `INTERNET` permission only (`AndroidManifest.xml`), and AAB splits enabled (`language`, `density`, `abi`).

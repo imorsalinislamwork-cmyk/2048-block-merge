@@ -1,17 +1,9 @@
 import { App as CapApp } from '@capacitor/app';
 import { Capacitor } from '@capacitor/core';
 import { SplashScreen } from '@capacitor/splash-screen';
-import { StatusBar, Style } from '@capacitor/status-bar';
 
 export async function initNativeAndroidUI(): Promise<void> {
   if (!Capacitor.isNativePlatform()) return;
-
-  try {
-    await StatusBar.setStyle({ style: Style.Dark });
-    await StatusBar.setBackgroundColor({ color: '#0e0520' });
-  } catch {
-    // Ignore on platforms where StatusBar is unsupported
-  }
 
   try {
     await SplashScreen.hide();
